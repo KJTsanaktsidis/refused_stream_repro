@@ -78,7 +78,7 @@
     "trace",
   ]
   pruneopts = "UT"
-  revision = "ab400d30ebde25116e68880440d31222a016f2a7"
+  revision = "a544f70c90f196e50d198126db0c4cb2b562fec0"
 
 [[projects]]
   branch = "master"
@@ -214,6 +214,12 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  input-imports = ["cloud.google.com/go/storage"]
+  input-imports = [
+    "cloud.google.com/go/storage",
+    "golang.org/x/net/http2",
+    "golang.org/x/oauth2",
+    "golang.org/x/oauth2/google",
+    "google.golang.org/api/option",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1

@@ -2,16 +2,52 @@ package main
 
 import (
 	"context"
+	"crypto/tls"
 	"fmt"
 	"math/rand"
+	"net"
+	"net/http"
 	"time"
 
 	"cloud.google.com/go/storage"
+	"golang.org/x/net/http2"
+	"golang.org/x/oauth2"
+	"golang.org/x/oauth2/google"
+	"google.golang.org/api/option"
 )
 
 func main() {
 	appCtx := context.Background()
-	storageClient, err := storage.NewClient(appCtx)
+	dialer := net.Dialer{
+		Timeout:   30 * time.Second,
+		KeepAlive: 30 * time.Second,
+		DualStack: false,
+	}
+	tlsConfig := &tls.Config{}
+	httpTransport := &http.Transport{
+		TLSClientConfig:       tlsConfig,
+		Proxy:                 http.ProxyFromEnvironment,
+		DialContext:           dialer.DialContext,
+		MaxIdleConns:          100,
+		IdleConnTimeout:       90 * time.Second,
+		TLSHandshakeTimeout:   10 * time.Second,
+		ExpectContinueTimeout: 1 * time.Second,
+	}
+	if err := http2.ConfigureTransport(httpTransport); err != nil {
+		panic(fmt.Sprintf("failed to configure http2: %s", err))
+	}
+
+	tokenSource, err := google.DefaultTokenSource(appCtx)
+
+	oauth2Transport := &oauth2.Transport{
+		Source: tokenSource,
+		Base:   httpTransport,
+	}
+	httpClient := &http.Client{
+		Transport: oauth2Transport,
+	}
+
+	storageClient, err := storage.NewClient(appCtx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		panic(err)
 	}
