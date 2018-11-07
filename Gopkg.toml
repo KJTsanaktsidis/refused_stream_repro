@@ -32,3 +32,8 @@
 [prune]
   go-tests = true
   unused-packages = true
+
+[[override]]
+  name = "golang.org/x/net"
+  source = "github.com/euroelessar/net"
+  revision = "3ac4a573b62846ef4944599085218e119819383c"

@@ -64,8 +64,7 @@
   version = "v0.18.0"
 
 [[projects]]
-  branch = "master"
-  digest = "1:cb50171ec1782317a86709fce896e4f564a35ceece954561288afa5948cf5856"
+  digest = "1:038cf74643b6998774c247467a3b54f6c44719be20070818bd4c29cbc9d68fe0"
   name = "golang.org/x/net"
   packages = [
     "context",
@@ -78,7 +77,8 @@
     "trace",
   ]
   pruneopts = "UT"
-  revision = "a544f70c90f196e50d198126db0c4cb2b562fec0"
+  revision = "3ac4a573b62846ef4944599085218e119819383c"
+  source = "github.com/euroelessar/net"
 
 [[projects]]
   branch = "master"
